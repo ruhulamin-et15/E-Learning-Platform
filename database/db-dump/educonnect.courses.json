@@ -1,0 +1,95 @@
+[{
+  "_id": {
+    "$oid": "6648184a6fe803e9128d7fba"
+  },
+  "title": "Learn Python",
+  "description": "Learn Python programming language from scratch with hands-on exercises.",
+  "thumbnail": "python_thumbnail.png",
+  "modules": [
+    {
+      "$oid": "663a0893bfe65e5778eedf3c"
+    },
+    {
+      "$oid": "663a0893bfe65e5778eedf3d"
+    }
+  ],
+  "price": 4567,
+  "active": true,
+  "category": {
+    "$oid": "664813cc6fe803e9128d7fae"
+  },
+  "instructor": {
+    "$oid": "663a06e7bfe65e5778eedf2a"
+  },
+  "__v": 0,
+  "testimonials": [
+    {
+      "$oid": "663a0a05bfe65e5778eedf58"
+    }
+  ],
+  "quizSet": {
+    "$oid": "663a096ebfe65e5778eedf4a"
+  },
+  "subtitle": "Learn Python Like a Pro",
+  "learning": [
+    "Learn Python from the basic fundamentals",
+    "Learn how to apply the fundamentals to build things",
+    "Learn to make projects that are production ready",
+    "Get a bonus chapter on using Python for Machine Learning"
+  ],
+  "createdOn": {
+    "$date": "2024-02-12T00:00:00.000Z"
+  },
+  "modifiedOn": {
+    "$date": "2024-04-11T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "664aca881387e2ad2e8be484"
+  },
+  "title": "Mastering JavaScript",
+  "description": "Learn JavaScript fundamentals from scratch with hands-on exercises.",
+  "thumbnail": "learn_js_thumbnail.jpeg",
+  "modules": [
+    {
+      "$oid": "663a0893bfe65e5778eedf3c"
+    },
+    {
+      "$oid": "663a0893bfe65e5778eedf3d"
+    }
+  ],
+  "price": 5678,
+  "active": true,
+  "category": {
+    "$oid": "664813cc6fe803e9128d7fae"
+  },
+  "instructor": {
+    "$oid": "66504f85171d3fa703e7e043"
+  },
+  "__v": 0,
+  "testimonials": [
+    {
+      "$oid": "664acd311387e2ad2e8be48b"
+    },
+    {
+      "$oid": "664af61c1387e2ad2e8be4ad"
+    }
+  ],
+  "quizSet": {
+    "$oid": "663a096ebfe65e5778eedf4a"
+  },
+  "subtitle": "JavaScript Fundamentals Like a PRO",
+  "learning": [
+    "Learn JavaScript from the basic fundamentals",
+    "Learn how to apply the fundamentals to build things",
+    "Learn to make projects that are production ready",
+    "Get a bonus chapter on using JavaScript for Full Stack Develeopment"
+  ],
+  "createdOn": {
+    "$date": "2024-02-12T00:00:00.000Z"
+  },
+  "modifiedOn": {
+    "$date": "2024-04-11T00:00:00.000Z"
+  }
+}]

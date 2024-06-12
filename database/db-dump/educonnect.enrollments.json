@@ -1,0 +1,62 @@
+[{
+  "_id": {
+    "$oid": "663a0a2ebfe65e5778eedf60"
+  },
+  "enrollment_date": "2024-04-20",
+  "status": "complete",
+  "completion_date": "2024-05-15",
+  "method": "paypal",
+  "course": {
+    "$oid": "6648184a6fe803e9128d7fba"
+  },
+  "student": {
+    "$oid": "663a0b36bfe65e5778eedf7e"
+  }
+},
+{
+  "_id": {
+    "$oid": "664acbd81387e2ad2e8be486"
+  },
+  "enrollment_date": "2024-04-20",
+  "status": "complete",
+  "completion_date": "2024-05-15",
+  "method": "stripe",
+  "course": {
+    "$oid": "664aca881387e2ad2e8be484"
+  },
+  "student": {
+    "$oid": "664accf41387e2ad2e8be488"
+  }
+},
+{
+  "_id": {
+    "$oid": "664adedb1387e2ad2e8be4a4"
+  },
+  "enrollment_date": "2024-04-20",
+  "status": "complete",
+  "completion_date": "2024-05-15",
+  "method": "stripe",
+  "course": {
+    "$oid": "664aca881387e2ad2e8be484"
+  },
+  "student": {
+    "$oid": "664adddc1387e2ad2e8be4a0"
+  }
+},
+{
+  "_id": {
+    "$oid": "66509d9b5f7ef01511c20c73"
+  },
+  "enrollment_date": {
+    "$date": "2024-05-24T14:00:59.481Z"
+  },
+  "status": "not-started",
+  "method": "stripe",
+  "course": {
+    "$oid": "6648184a6fe803e9128d7fba"
+  },
+  "student": {
+    "$oid": "66504fc6171d3fa703e7e05b"
+  },
+  "__v": 0
+}]
