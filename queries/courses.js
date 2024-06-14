@@ -69,7 +69,12 @@ export async function getCourseDetails(id) {
 }
 
 export async function getCourseDetailsByInstructor(instructorId) {
-  const courses = await Course.find({ instructor: instructorId }).lean();
+  const courses = await Course.find({ instructor: instructorId })
+    .populate({
+      path: "instructor",
+      model: User,
+    })
+    .lean();
 
   const enrollments = await Promise.all(
     courses.map(async (course) => {
@@ -96,7 +101,8 @@ export async function getCourseDetailsByInstructor(instructorId) {
     }, 0) / totalTestimonials.length;
 
   return {
-    courses: courses.length,
+    courses: replaceMongoIdInArray(courses),
+    totalCourses: courses.length,
     enrollments: totalEnrollments,
     reviews: totalTestimonials.length,
     ratings: avgRating.toPrecision(2),

@@ -42,7 +42,6 @@ const CourseDetailsIntro = async ({ course }) => {
                     hasEnrollment={hasEnrollment}
                   />
                 )}
-
                 <Link
                   href=""
                   className={cn(
@@ -54,7 +53,6 @@ const CourseDetailsIntro = async ({ course }) => {
               </div>
             </div>
           </div>
-
           <div className="pb-12  mt-6">
             <div className="relative">
               <div className="absolute inset-0 h-2/3"></div>

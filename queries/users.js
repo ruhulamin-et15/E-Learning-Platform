@@ -6,6 +6,11 @@ export async function getUserByEmail(email) {
   return user;
 }
 
+export async function getUserById(userId) {
+  const user = await User.findById(userId).lean();
+  return user;
+}
+
 export async function validatePassword(email, password) {
   const user = await getUserByEmail(email);
   const isMatch = await bcrypt.compare(password, user.password);
