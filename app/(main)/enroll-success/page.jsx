@@ -31,7 +31,7 @@ const Success = async ({ searchParams: { session_id, courseId } }) => {
   const productName = course?.title;
 
   if (paymentStatus === "succeeded") {
-    await enrollForCourse(course?.id, loggedInUser?.id, "stripe");
+    await enrollForCourse(course?.id, loggedInUser?._id, "stripe");
 
     const instructorName = `${course?.instructor?.firstName} ${course?.instructor?.lastName}`;
     const instructorEmail = course?.instructor?.email;
