@@ -2,15 +2,17 @@ import { Course } from "@/model/course-model";
 import { Category } from "@/model/category-model";
 import { User } from "@/model/user-model";
 import { Testimonial } from "@/model/testimonial-model";
-import { Module } from "@/model/module.model";
 import {
   replaceMongoIdInArray,
   replaceMongoIdInObject,
 } from "@/lib/convertData";
 import { getEnrollmentsForCourse } from "./enrollments";
 import { getTestimonialsForCourse } from "./testimonials";
+import { Module } from "@/model/module-model";
+import { dbConnect } from "@/service/mongo";
 
 export async function getCourseList() {
+  await dbConnect();
   const courses = await Course.find({ active: true })
     .select([
       "title",
@@ -42,6 +44,7 @@ export async function getCourseList() {
 }
 
 export async function getCourseDetails(id) {
+  await dbConnect();
   const course = await Course.findById(id)
     .populate({
       path: "category",
@@ -69,6 +72,7 @@ export async function getCourseDetails(id) {
 }
 
 export async function getCourseDetailsByInstructor(instructorId, expand) {
+  await dbConnect();
   const publishedCourse = await Course.find({
     instructor: instructorId,
     active: true,
@@ -121,6 +125,7 @@ export async function getCourseDetailsByInstructor(instructorId, expand) {
 }
 
 export async function create(courseData) {
+  await dbConnect();
   try {
     const course = await Course.create(courseData);
     return JSON.parse(JSON.stringify(course));

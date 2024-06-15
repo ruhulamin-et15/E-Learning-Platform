@@ -1,12 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "@hello-pangea/dnd";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Grip, Pencil } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -62,8 +57,7 @@ export const LessonList = ({ items, onReorder, onEdit }) => {
                   <div
                     className={cn(
                       "flex items-center gap-x-2 bg-slate-200 border-slate-200 border text-slate-700 rounded-md mb-4 text-sm",
-                      module.isPublished &&
-                        "bg-sky-100 border-sky-200 text-sky-700"
+                      module.active && "bg-sky-100 border-sky-200 text-sky-700"
                     )}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
@@ -71,8 +65,7 @@ export const LessonList = ({ items, onReorder, onEdit }) => {
                     <div
                       className={cn(
                         "px-2 py-3 border-r border-r-slate-200 hover:bg-slate-300 rounded-l-md transition",
-                        module.isPublished &&
-                          "border-r-sky-200 hover:bg-sky-200"
+                        module.active && "border-r-sky-200 hover:bg-sky-200"
                       )}
                       {...provided.dragHandleProps}
                     >
@@ -86,10 +79,10 @@ export const LessonList = ({ items, onReorder, onEdit }) => {
                       <Badge
                         className={cn(
                           "bg-gray-500",
-                          module.isPublished && "bg-emerald-600"
+                          module.active && "bg-emerald-600"
                         )}
                       >
-                        {module.isPublished ? "Published" : "Draft"}
+                        {module.active ? "Published" : "Draft"}
                       </Badge>
                       <Pencil
                         onClick={() => onEdit(module.id)}
@@ -107,3 +100,4 @@ export const LessonList = ({ items, onReorder, onEdit }) => {
     </DragDropContext>
   );
 };
+

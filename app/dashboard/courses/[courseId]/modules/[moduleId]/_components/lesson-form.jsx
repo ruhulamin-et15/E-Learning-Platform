@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,30 +19,21 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { LessonList } from "./lesson-list";
 import { LessonModal } from "./lesson-modal";
+import { getSlug } from "@/lib/convertData";
+import { createLesson, reOrderLessons } from "@/app/actions/lesson";
 
 const formSchema = z.object({
   title: z.string().min(1),
 });
-const initialModules = [
-  {
-    id: "1",
-    title: "Module 1",
-    isPublished: true,
-  },
-  {
-    id: "2",
-    title: "Module 2",
-  },
-];
-export const LessonForm = ({ initialData, courseId }) => {
+
+export const LessonForm = ({ initialData, moduleId, courseId }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [modules, setModules] = useState(initialModules);
+  const [lessons, setLessons] = useState(initialData);
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-
+  const [lessonToEdit, setLessonToEdit] = useState(null);
   const toggleCreating = () => setIsCreating((current) => !current);
-  const toggleEditing = () => setIsEditing((current) => !current);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -56,14 +46,21 @@ export const LessonForm = ({ initialData, courseId }) => {
 
   const onSubmit = async (values) => {
     try {
-      setModules((modules) => [
-        ...modules,
+      const formData = new FormData();
+      formData.append("title", values.title);
+      formData.append("slug", getSlug(values.title));
+      formData.append("moduleId", moduleId);
+      formData.append("order", lessons.length);
+
+      const lesson = await createLesson(formData);
+      setLessons((lessons) => [
+        ...lessons,
         {
-          id: Date.now().toString(),
+          id: lesson?._id.toString(),
           title: values.title,
         },
       ]);
-      toast.success("Module created");
+      toast.success("Lesson has been created");
       toggleCreating();
       router.refresh();
     } catch (error) {
@@ -72,11 +69,10 @@ export const LessonForm = ({ initialData, courseId }) => {
   };
 
   const onReorder = async (updateData) => {
-    console.log({ updateData });
     try {
       setIsUpdating(true);
-
-      toast.success("Lesson reordered");
+      await reOrderLessons(updateData);
+      toast.success("Lesson has been reordered");
       router.refresh();
     } catch {
       toast.error("Something went wrong");
@@ -85,7 +81,9 @@ export const LessonForm = ({ initialData, courseId }) => {
     }
   };
 
-  const onEdit = (id) => {
+  const onEdit = async (id) => {
+    const foundLesson = lessons.find((lesson) => lesson.id === id);
+    setLessonToEdit(foundLesson);
     setIsEditing(true);
   };
 
@@ -142,14 +140,14 @@ export const LessonForm = ({ initialData, courseId }) => {
         <div
           className={cn(
             "text-sm mt-2",
-            !modules?.length && "text-slate-500 italic"
+            !lessons?.length && "text-slate-500 italic"
           )}
         >
-          {!modules?.length && "No module"}
+          {!lessons?.length && "No lessons"}
           <LessonList
             onEdit={onEdit}
             onReorder={onReorder}
-            items={modules || []}
+            items={lessons || []}
           />
         </div>
       )}
@@ -158,7 +156,13 @@ export const LessonForm = ({ initialData, courseId }) => {
           Drag & Drop to reorder the modules
         </p>
       )}
-      <LessonModal open={isEditing} setOpen={setIsEditing} />
+      <LessonModal
+        open={isEditing}
+        setOpen={setIsEditing}
+        courseId={courseId}
+        lesson={lessonToEdit}
+      />
     </div>
   );
 };
+

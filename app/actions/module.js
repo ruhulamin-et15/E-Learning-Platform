@@ -2,9 +2,11 @@
 
 import { create } from "@/queries/modules";
 import { Course } from "@/model/course-model";
-import { Module } from "@/model/module.model";
+import { Module } from "@/model/module-model";
+import { dbConnect } from "@/service/mongo";
 
 export async function createModule(data) {
+  await dbConnect();
   try {
     const title = data.get("title");
     const slug = data.get("slug");
@@ -28,6 +30,7 @@ export async function createModule(data) {
 }
 
 export async function reOrderModules(data) {
+  await dbConnect();
   try {
     await Promise.all(
       data.map(async (element) => {
@@ -40,6 +43,7 @@ export async function reOrderModules(data) {
 }
 
 export async function updateModule(moduleId, data) {
+  await dbConnect();
   try {
     await Module.findByIdAndUpdate(moduleId, data);
   } catch (error) {
