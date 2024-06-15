@@ -96,6 +96,9 @@ export function MainNav({ items, children }) {
               <Link href="/account">Profile</Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer" asChild>
+              <Link href="/dashboard">Dashboard</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer" asChild>
               <Link href="/account/enrolled-courses">My Courses</Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer" asChild>

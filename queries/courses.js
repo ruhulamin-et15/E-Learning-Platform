@@ -11,7 +11,7 @@ import { getEnrollmentsForCourse } from "./enrollments";
 import { getTestimonialsForCourse } from "./testimonials";
 
 export async function getCourseList() {
-  const courses = await Course.find({})
+  const courses = await Course.find({ active: true })
     .select([
       "title",
       "subtitle",
@@ -68,8 +68,11 @@ export async function getCourseDetails(id) {
   return replaceMongoIdInObject(course);
 }
 
-export async function getCourseDetailsByInstructor(instructorId) {
-  const courses = await Course.find({ instructor: instructorId })
+export async function getCourseDetailsByInstructor(instructorId, expand) {
+  const publishedCourse = await Course.find({
+    instructor: instructorId,
+    active: true,
+  })
     .populate({
       path: "instructor",
       model: User,
@@ -77,7 +80,7 @@ export async function getCourseDetailsByInstructor(instructorId) {
     .lean();
 
   const enrollments = await Promise.all(
-    courses.map(async (course) => {
+    publishedCourse.map(async (course) => {
       const enrollment = await getEnrollmentsForCourse(course._id.toString());
       return enrollment;
     })
@@ -88,7 +91,7 @@ export async function getCourseDetailsByInstructor(instructorId) {
   }, 0);
 
   const testimonials = await Promise.all(
-    courses.map(async (course) => {
+    publishedCourse.map(async (course) => {
       const testimonial = await getTestimonialsForCourse(course._id.toString());
       return testimonial;
     })
@@ -100,12 +103,29 @@ export async function getCourseDetailsByInstructor(instructorId) {
       return acc + obj.rating;
     }, 0) / totalTestimonials.length;
 
+  if (expand) {
+    const allCourses = await Course.find({ instructor: instructorId }).lean();
+    return {
+      courses: allCourses?.flat(),
+      enrollments: enrollments?.flat(),
+      reviews: totalTestimonials,
+    };
+  }
   return {
-    courses: replaceMongoIdInArray(courses),
-    totalCourses: courses.length,
+    courses: replaceMongoIdInArray(publishedCourse),
+    totalCourses: publishedCourse.length,
     enrollments: totalEnrollments,
     reviews: totalTestimonials.length,
     ratings: avgRating.toPrecision(2),
   };
+}
+
+export async function create(courseData) {
+  try {
+    const course = await Course.create(courseData);
+    return JSON.parse(JSON.stringify(course));
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 

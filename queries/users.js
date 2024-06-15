@@ -2,12 +2,12 @@ import { User } from "@/model/user-model";
 import bcrypt from "bcryptjs";
 
 export async function getUserByEmail(email) {
-  const user = await User.findOne({ email: email }).lean();
+  const user = await User.findOne({ email: email }).select("-password").lean();
   return user;
 }
 
 export async function getUserById(userId) {
-  const user = await User.findById(userId).lean();
+  const user = await User.findById(userId).select("-password").lean();
   return user;
 }
 
