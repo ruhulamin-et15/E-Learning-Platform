@@ -160,7 +160,9 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
         open={isEditing}
         setOpen={setIsEditing}
         courseId={courseId}
+        moduleId={moduleId}
         lesson={lessonToEdit}
+        onClose={() => window.location.reload()}
       />
     </div>
   );

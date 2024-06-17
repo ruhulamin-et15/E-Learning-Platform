@@ -25,3 +25,28 @@ export async function updateCourse(courseId, dataToUpdate) {
     throw new Error(error);
   }
 }
+
+export async function changeCourseState(courseId) {
+  await dbConnect();
+  try {
+    const course = await Course.findById(courseId);
+    console.log(course);
+    const res = await Course.findByIdAndUpdate(
+      courseId,
+      { active: !course.active },
+      { lean: true }
+    );
+    return res.active;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function deleteCourse(courseId) {
+  await dbConnect();
+  try {
+    await Course.findByIdAndDelete(courseId);
+  } catch (error) {
+    throw new Error(error);
+  }
+}

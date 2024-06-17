@@ -1,15 +1,16 @@
 "use client";
 
 import { Trash } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
+import { changeModulePublishState, deleteModule } from "@/app/actions/module";
 import { useRouter } from "next/navigation";
-import { changeCourseState, deleteCourse } from "@/app/actions/course";
 
-export const CourseActions = ({ courseId, isActive }) => {
+export const ModuleActions = ({ module, courseId }) => {
   const [action, setAction] = useState(null);
-  const [publish, setPublish] = useState(isActive);
+  const [publish, setPublish] = useState(module?.active);
 
   const router = useRouter();
 
@@ -18,10 +19,10 @@ export const CourseActions = ({ courseId, isActive }) => {
     try {
       switch (action) {
         case "change-active": {
-          const activeState = await changeCourseState(courseId);
+          const activeState = await changeModulePublishState(module?.id);
           setPublish(!activeState);
           toast.success(
-            `The course has been ${publish ? "Unpublish" : "Publish"}`
+            `The module has been ${publish ? "Unpublish" : "Publish"}`
           );
           router.refresh();
           break;
@@ -29,19 +30,19 @@ export const CourseActions = ({ courseId, isActive }) => {
         case "delete": {
           if (publish) {
             toast.error(
-              "A published course can't be deleted. First unpublish it, then delete!"
+              "A published module can't be deleted. First unpublish it, then delete!"
             );
           } else if (
-            window.confirm("Are you sure want to delete this course?")
+            window.confirm("Are you sure want to delete this module?")
           ) {
-            await deleteCourse(courseId);
-            toast.success("This course has been deleted");
-            router.push(`/dashboard/courses`);
+            await deleteModule(module.id, courseId);
+            toast.success("This module has been deleted");
+            router.push(`/dashboard/courses/${courseId}`);
           }
           break;
         }
         default: {
-          throw new Error("Invalid course action");
+          throw new Error("Invalid Module Action");
         }
       }
     } catch (error) {
@@ -66,4 +67,3 @@ export const CourseActions = ({ courseId, isActive }) => {
     </form>
   );
 };
-

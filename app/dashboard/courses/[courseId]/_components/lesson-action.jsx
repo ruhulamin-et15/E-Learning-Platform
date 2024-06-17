@@ -4,44 +4,40 @@ import { Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { changeCourseState, deleteCourse } from "@/app/actions/course";
+import { changeLessonPublishState, deleteLesson } from "@/app/actions/lesson";
 
-export const CourseActions = ({ courseId, isActive }) => {
+export const LessonActions = ({ lesson, moduleId, onDelete }) => {
   const [action, setAction] = useState(null);
-  const [publish, setPublish] = useState(isActive);
-
-  const router = useRouter();
+  const [publish, setPublish] = useState(lesson?.published);
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
       switch (action) {
         case "change-active": {
-          const activeState = await changeCourseState(courseId);
+          const activeState = await changeLessonPublishState(lesson.id);
           setPublish(!activeState);
           toast.success(
-            `The course has been ${publish ? "Unpublish" : "Publish"}`
+            `The lesson has been ${publish ? "Unpublish" : "Publish"}`
           );
-          router.refresh();
           break;
         }
         case "delete": {
           if (publish) {
             toast.error(
-              "A published course can't be deleted. First unpublish it, then delete!"
+              "A published lesson can't be deleted. First unpublish it, then delete!"
             );
           } else if (
-            window.confirm("Are you sure want to delete this course?")
+            window.confirm("Are you sure want to delete this lesson?")
           ) {
-            await deleteCourse(courseId);
-            toast.success("This course has been deleted");
-            router.push(`/dashboard/courses`);
+            await deleteLesson(lesson.id, moduleId);
+            onDelete();
+            toast.success("This lesson has been deleted");
           }
           break;
         }
         default: {
-          throw new Error("Invalid course action");
+          throw new Error("Invalid lesson action");
         }
       }
     } catch (error) {
@@ -66,4 +62,3 @@ export const CourseActions = ({ courseId, isActive }) => {
     </form>
   );
 };
-
