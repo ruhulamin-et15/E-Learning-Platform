@@ -1,7 +1,6 @@
 "use client";
 
 import * as z from "zod";
-// import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -12,11 +11,13 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { updateQuizSet } from "@/app/actions/quizzes";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   title: z.string().min(1, {
@@ -24,7 +25,7 @@ const formSchema = z.object({
   }),
 });
 
-export const TitleForm = ({ initialData = {} }) => {
+export const TitleForm = ({ initialData = {}, quizSetId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -39,8 +40,10 @@ export const TitleForm = ({ initialData = {} }) => {
 
   const onSubmit = async (values) => {
     try {
+      await updateQuizSet(quizSetId, values);
       toggleEdit();
       router.refresh();
+      toast.success("Quiz title has been updated");
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -95,3 +98,4 @@ export const TitleForm = ({ initialData = {} }) => {
     </div>
   );
 };
+
