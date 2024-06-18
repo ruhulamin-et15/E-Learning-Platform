@@ -3,12 +3,9 @@ import { QuizSetAction } from "./_components/quiz-set-action";
 import { TitleForm } from "./_components/title-form";
 import { AddQuizForm } from "./_components/add-quiz-form";
 import { cn } from "@/lib/utils";
-import { Pencil } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Trash } from "lucide-react";
-import { CircleCheck } from "lucide-react";
-import { Circle } from "lucide-react";
+import { Circle, CircleCheck } from "lucide-react";
 import { getQuizSetById } from "@/queries/quizzes";
+import QuizCardActions from "./_components/quiz-card-action";
 
 const EditQuizSet = async ({ params: { quizSetId } }) => {
   const quizSets = await getQuizSetById(quizSetId);
@@ -32,7 +29,6 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
         label="This course is unpublished. It will not be visible in the course."
         variant="warning"
       />
-
       <div className="p-6">
         <div className="flex items-center justify-end">
           <QuizSetAction />
@@ -56,7 +52,6 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
                     className=" bg-gray-50 shadow-md p-4 lg:p-6 rounded-md border"
                   >
                     <h2 className="mb-3">{quiz.title}</h2>
-
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {quiz.options.map((option) => {
                         return (
@@ -78,16 +73,7 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
                       })}
                     </div>
                     <div className="flex items-center justify-end gap-2 mt-6">
-                      <Button variant="ghost" size="sm">
-                        <Pencil className="w-3 mr-1" /> Edit
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="text-destructive"
-                        variant="ghost"
-                      >
-                        <Trash className="w-3 mr-1" /> Delete
-                      </Button>
+                      <QuizCardActions quiz={quiz} quizSetId={quizSetId} />
                     </div>
                   </div>
                 );
@@ -105,7 +91,7 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
               />
             </div>
             <div className="max-w-[800px]">
-              <AddQuizForm />
+              <AddQuizForm quizSetId={quizSetId} />
             </div>
           </div>
         </div>

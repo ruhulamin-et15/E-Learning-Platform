@@ -1,11 +1,9 @@
 "use client";
 
 import * as z from "zod";
-// import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-
 import {
   Form,
   FormControl,
@@ -16,12 +14,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { PlusCircle } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
+import { addQuizToQuizSet } from "@/app/actions/quizzes";
 
 const formSchema = z.object({
   title: z
@@ -80,7 +76,7 @@ const formSchema = z.object({
   }),
 });
 
-export const AddQuizForm = ({ setQuizes }) => {
+export const AddQuizForm = ({ quizSetId }) => {
   const router = useRouter();
 
   const form = useForm({
@@ -108,46 +104,51 @@ export const AddQuizForm = ({ setQuizes }) => {
     },
   });
 
-  const { isSubmitting, isValid, errors } = form.formState;
+  const { isSubmitting, errors } = form.formState;
   console.log(errors);
 
   const onSubmit = async (values) => {
     try {
       console.log({ values });
 
-      const structuredQuiz = {
-        id: Date.now(),
-        title: values.title,
-        options: [
-          values.optionA,
-          values.optionB,
-          values.optionC,
-          values.optionD,
-        ],
-      };
-      setQuizes((prevQuizes) => [...prevQuizes, structuredQuiz]);
-      form.reset({
-        title: "",
-        description: "",
-        optionA: {
-          label: "",
-          isTrue: false,
-        },
-        optionB: {
-          label: "",
-          isTrue: false,
-        },
-        optionC: {
-          label: "",
-          isTrue: false,
-        },
-        optionD: {
-          label: "",
-          isTrue: false,
-        },
-      });
-      toggleEdit();
-      router.refresh();
+      const correctness = [
+        values.optionA.isTrue,
+        values.optionB.isTrue,
+        values.optionC.isTrue,
+        values.optionD.isTrue,
+      ];
+
+      const correctMarked = correctness.filter((c) => c);
+
+      const isOneCorrectMarked = correctMarked.length === 1;
+
+      if (isOneCorrectMarked) {
+        await addQuizToQuizSet(quizSetId, values);
+        toast.success("Quiz added successfully");
+        form.reset({
+          title: "",
+          description: "",
+          optionA: {
+            label: "",
+            isTrue: false,
+          },
+          optionB: {
+            label: "",
+            isTrue: false,
+          },
+          optionC: {
+            label: "",
+            isTrue: false,
+          },
+          optionD: {
+            label: "",
+            isTrue: false,
+          },
+        });
+        router.refresh();
+      } else {
+        toast.error("You must mark only one correct answer.");
+      }
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -158,7 +159,6 @@ export const AddQuizForm = ({ setQuizes }) => {
       <div className="font-medium flex items-center justify-between">
         Add New Quiz
       </div>
-
       {
         <Form {...form}>
           <form
@@ -376,3 +376,4 @@ export const AddQuizForm = ({ setQuizes }) => {
     </div>
   );
 };
+

@@ -1,4 +1,7 @@
-import { replaceMongoIdInArray } from "@/lib/convertData";
+import {
+  replaceMongoIdInArray,
+  replaceMongoIdInObject,
+} from "@/lib/convertData";
 import { Quizset } from "@/model/quizset-model";
 import { Quiz } from "@/model/quizzes-model";
 import { dbConnect } from "@/service/mongo";
@@ -23,6 +26,25 @@ export async function getQuizSetById(id) {
       })
       .lean();
     return quizSet;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function getQuizById(id) {
+  await dbConnect();
+  try {
+    const quiz = await Quiz.findById(id).lean();
+    return replaceMongoIdInObject(quiz);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function createQuiz(quizData) {
+  try {
+    const quiz = await Quiz.create(quizData);
+    return quiz._id.toString();
   } catch (error) {
     throw new Error(error);
   }
