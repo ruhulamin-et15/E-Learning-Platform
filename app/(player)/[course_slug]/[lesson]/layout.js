@@ -1,8 +1,3 @@
-import { CourseProgress } from "@/components/course-progress";
-import { cn } from "@/lib/utils";
-import { PlayCircle } from "lucide-react";
-import { Lock } from "lucide-react";
-import { CheckCircle } from "lucide-react";
 import { CourseSidebarMobile } from "./_components/course-sidebar-mobile";
 import { CourseSidebar } from "./_components/course-sidebar";
 
@@ -26,3 +21,4 @@ const CourseLayout = ({ children }) => {
   );
 };
 export default CourseLayout;
+

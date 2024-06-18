@@ -94,7 +94,6 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
               })}
             </div>
           </div>
-          {/*  */}
           <div>
             <div className="flex items-center gap-x-2">
               <h2 className="text-xl">Customize your quiz set</h2>
@@ -105,7 +104,6 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
                 quizSetId={quizSetId}
               />
             </div>
-
             <div className="max-w-[800px]">
               <AddQuizForm />
             </div>
