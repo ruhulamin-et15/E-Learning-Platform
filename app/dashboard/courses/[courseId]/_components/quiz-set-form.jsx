@@ -18,25 +18,13 @@ import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { updateQuizSetId } from "@/app/actions/course";
 
 const formSchema = z.object({
   quizSetId: z.string().min(1),
 });
 
-export const QuizSetForm = ({
-  initialData,
-  courseId,
-  options = [
-    {
-      value: "quiz_set_1",
-      label: "Quiz Set 1",
-    },
-    {
-      value: "2",
-      label: "Quiz Set 2",
-    },
-  ],
-}) => {
+export const QuizSetForm = ({ initialData, courseId, options }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -44,16 +32,19 @@ export const QuizSetForm = ({
 
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      quizSetId: initialData?.quizSetId || "",
-    },
+    defaultValues: initialData?.quizSetId || "",
   });
+
+  const quizSetName = options.find(
+    (option) => option.value === initialData.quizSetId
+  );
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values) => {
     try {
-      toast.success("Course updated");
+      await updateQuizSetId(courseId, values);
+      toast.success("Course quiz set updated");
       toggleEdit();
       router.refresh();
     } catch (error) {
@@ -83,10 +74,9 @@ export const QuizSetForm = ({
             !initialData.quizSetId && "text-slate-500 italic"
           )}
         >
-          {"No quiz set selected"}
+          {quizSetName ? quizSetName?.label : "No quiz set selected"}
         </p>
       )}
-      {console.log({ options })}
       {isEditing && (
         <Form {...form}>
           <form
@@ -116,3 +106,4 @@ export const QuizSetForm = ({
     </div>
   );
 };
+

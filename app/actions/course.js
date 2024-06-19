@@ -4,6 +4,7 @@ import { getLoggedInUser } from "@/lib/loggedin-user";
 import { Course } from "@/model/course-model";
 import { create } from "@/queries/courses";
 import { dbConnect } from "@/service/mongo";
+import mongoose from "mongoose";
 
 export async function createCourse(data) {
   await dbConnect();
@@ -30,7 +31,6 @@ export async function changeCourseState(courseId) {
   await dbConnect();
   try {
     const course = await Course.findById(courseId);
-    console.log(course);
     const res = await Course.findByIdAndUpdate(
       courseId,
       { active: !course.active },
@@ -46,6 +46,17 @@ export async function deleteCourse(courseId) {
   await dbConnect();
   try {
     await Course.findByIdAndDelete(courseId);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function updateQuizSetId(courseId, dataToUpdate) {
+  await dbConnect();
+  try {
+    const data = {};
+    data["quizSet"] = new mongoose.Types.ObjectId(dataToUpdate.quizSetId);
+    await Course.findByIdAndUpdate(courseId, data);
   } catch (error) {
     throw new Error(error);
   }

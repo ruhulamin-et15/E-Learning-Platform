@@ -6,10 +6,15 @@ import { Quizset } from "@/model/quizset-model";
 import { Quiz } from "@/model/quizzes-model";
 import { dbConnect } from "@/service/mongo";
 
-export async function getAllQuizSets() {
+export async function getAllQuizSets(excludeUnPublished) {
   await dbConnect();
   try {
-    const quizSets = await Quizset.find().lean();
+    let quizSets = {};
+    if (excludeUnPublished) {
+      quizSets = await Quizset.find({ active: true }).lean();
+    } else {
+      quizSets = await Quizset.find().lean();
+    }
     return replaceMongoIdInArray(quizSets);
   } catch (error) {
     throw new Error(error);

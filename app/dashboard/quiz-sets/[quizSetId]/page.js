@@ -25,16 +25,18 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
 
   return (
     <>
-      <AlertBanner
-        label="This course is unpublished. It will not be visible in the course."
-        variant="warning"
-      />
+      {!quizSets.active && (
+        <AlertBanner
+          label="This course is unpublished. It will not be visible in the course."
+          variant="warning"
+        />
+      )}
+
       <div className="p-6">
         <div className="flex items-center justify-end">
-          <QuizSetAction />
+          <QuizSetAction quizSets={quizSets} quizSetId={quizSetId} />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2  gap-6 mt-16">
-          {/* Quiz List */}
           <div className="max-lg:order-2">
             <h2 className="text-xl mb-6">Quiz List</h2>
             {quizes.length === 0 && (

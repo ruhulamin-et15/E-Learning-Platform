@@ -10,9 +10,11 @@ const QuizCardActions = ({ quiz, quizSetId }) => {
   const router = useRouter();
   async function handleDelete() {
     try {
-      await deleteQuiz(quiz.id, quizSetId);
-      toast.success("Quiz has been deleted");
-      router.refresh();
+      if (confirm("Are you sure want to delete this quiz?")) {
+        await deleteQuiz(quiz.id, quizSetId);
+        toast.success("Quiz has been deleted");
+        router.refresh();
+      }
     } catch (error) {
       toast.error(error.message);
     }
