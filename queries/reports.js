@@ -11,6 +11,10 @@ export async function getReport(filter) {
         ref: Assessment,
       })
       .lean();
+    if (!report) {
+      console.log("No report found with the given filter:", filter);
+      return null;
+    }
     return report;
   } catch (error) {
     throw new Error(error);

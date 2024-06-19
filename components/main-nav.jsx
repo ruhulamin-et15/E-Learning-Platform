@@ -5,9 +5,8 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "@/components/mobile-nav";
 import { Logo } from "./logo";
-import { X } from "lucide-react";
 import { Button, buttonVariants } from "./ui/button";
-import { Menu } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,9 +29,7 @@ export function MainNav({ items, children }) {
   return (
     <>
       <div className="flex gap-6 lg:gap-10">
-        <Link href="/">
-          <Logo />
-        </Link>
+        <Logo />
         {items?.length ? (
           <nav className="hidden gap-6 lg:flex">
             {items?.map((item, index) => (

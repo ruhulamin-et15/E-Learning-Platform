@@ -1,5 +1,7 @@
+import { CourseProgress } from "@/components/course-pregress";
 import { Badge } from "@/components/ui/badge";
 import { getCategoryDetails } from "@/queries/categories";
+import { getCourseDetails } from "@/queries/courses";
 import { getReport } from "@/queries/reports";
 import { BookOpen } from "lucide-react";
 import Image from "next/image";
@@ -10,16 +12,26 @@ const EnrolledCourseCard = async ({ enrollment }) => {
     student: enrollment?.student?._id,
   };
   const report = await getReport(filter);
-  const totalCompletedModules = report?.totalCompletedModules?.length;
-  const totalCompletedLessons = report?.totalCompletedLessons?.length;
+
+  const courseDetails = await getCourseDetails(enrollment?.course?._id);
+
+  const totalModules = courseDetails?.modules.length || 0;
+
+  const totalCompletedModules = report?.totalCompletedModules?.length || 0;
+
+  const totalProgress = totalModules
+    ? (totalCompletedModules / totalModules) * 100
+    : 0;
+
+  const totalCompletedLessons = report?.totalCompletedLessons?.length || 0;
   const quizzes = report?.quizAssessment?.assessments;
-  const totalQuizes = quizzes.length;
-  const quizzesTaken = quizzes.filter((q) => q.attempted);
+  const totalQuizes = quizzes?.length ?? 0;
+  const quizzesTaken = quizzes ? quizzes?.filter((q) => q.attempted) : [];
 
   const totalCorrect = quizzesTaken
-    .map((quiz) => {
+    ?.map((quiz) => {
       const item = quiz?.options;
-      return item.filter((o) => {
+      return item?.filter((o) => {
         return o.isCorrect === true && o.isSelected === true;
       });
     })
@@ -27,7 +39,7 @@ const EnrolledCourseCard = async ({ enrollment }) => {
     .flat();
 
   const marksFromQuizzes = totalCorrect?.length * 5;
-  const otherMarks = report?.quizAssessment?.otherMarks;
+  const otherMarks = report?.quizAssessment?.otherMarks ?? 0;
   const totalMarks = marksFromQuizzes + otherMarks;
 
   return (
@@ -56,7 +68,7 @@ const EnrolledCourseCard = async ({ enrollment }) => {
         <div className=" border-b pb-2 mb-2">
           <div className="flex items-center justify-between">
             <p className="text-md md:text-sm font-medium text-slate-700">
-              Total Modules: {enrollment?.course?.modules?.length}
+              Total Modules: {totalModules}
             </p>
             <p className="text-md md:text-sm font-medium text-slate-700">
               Completed Modules{" "}
@@ -69,7 +81,7 @@ const EnrolledCourseCard = async ({ enrollment }) => {
             </p>
 
             <p className="text-md md:text-sm font-medium text-slate-700">
-              Quiz taken <Badge variant="success">{quizzesTaken.length}</Badge>
+              Quiz taken <Badge variant="success">{quizzesTaken?.length}</Badge>
             </p>
           </div>
           <div className="flex items-center justify-between mt-2">
@@ -106,11 +118,11 @@ const EnrolledCourseCard = async ({ enrollment }) => {
           </p>
         </div>
 
-        {/*<CourseProgress
-						size="sm"
-						value={80}
-						variant={110 === 100 ? "success" : ""}
-	/>*/}
+        <CourseProgress
+          size="sm"
+          value={totalProgress}
+          variant={110 === 100 ? "success" : ""}
+        />
       </div>
     </div>
   );

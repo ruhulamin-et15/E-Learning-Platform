@@ -3,13 +3,12 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import Image from "next/image";
 import { EnrollCourse } from "@/components/enroll-course";
-import { auth } from "@/auth";
-import { getUserByEmail } from "@/queries/users";
 import { hasEnrollmentsForCourse } from "@/queries/enrollments";
+import { getLoggedInUser } from "@/lib/loggedin-user";
 
 const CourseDetailsIntro = async ({ course }) => {
-  const session = await auth();
-  const loggedInUser = await getUserByEmail(session?.user?.email);
+  const loggedInUser = await getLoggedInUser();
+
   const hasEnrollment = await hasEnrollmentsForCourse(
     course?.id,
     loggedInUser?._id
@@ -33,7 +32,10 @@ const CourseDetailsIntro = async ({ course }) => {
 
               <div className="mt-6 flex items-center justify-center flex-wrap gap-3">
                 {hasEnrollment ? (
-                  <Link href="" className={cn(buttonVariants({ size: "lg" }))}>
+                  <Link
+                    href={`/courses/${course.id}/lesson`}
+                    className={cn(buttonVariants({ size: "lg" }))}
+                  >
                     Access Course
                   </Link>
                 ) : (

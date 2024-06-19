@@ -38,7 +38,7 @@ const CourseCard = async ({ course }) => {
                 <div>
                   <BookOpen className="w-4" />
                 </div>
-                <span>{course?.modules?.length} Chapters</span>
+                <span>{course?.modules.length} Chapters</span>
               </div>
             </div>
           </div>
@@ -50,14 +50,14 @@ const CourseCard = async ({ course }) => {
         </p>
         {hasEnrollment ? (
           <Link
-            href="#"
+            href={`/courses/${course.id}/lesson`}
             variant="ghost"
             className="text-xs text-white border bg-green-400 px-1 py-2 rounded-md gap-1"
           >
             Accees Course
           </Link>
         ) : (
-          <EnrollCourse asLink={true} courseId={course?.id} />
+          <EnrollCourse asLink={true} courseId={course.id} />
         )}
       </div>
     </div>
