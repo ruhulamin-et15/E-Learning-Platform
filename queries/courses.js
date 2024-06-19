@@ -86,12 +86,18 @@ export async function getCourseDetailsByInstructor(instructorId, expand) {
   const enrollments = await Promise.all(
     publishedCourse.map(async (course) => {
       const enrollment = await getEnrollmentsForCourse(course._id.toString());
-      return enrollment;
+      return {
+        course: course,
+        price: course.price,
+        count: enrollment.length,
+      };
     })
   );
 
-  const totalEnrollments = enrollments.reduce(function (acc, obj) {
-    return acc + obj.length;
+  const totalEnrollments = enrollments.reduce((acc, obj) => acc + obj.count, 0);
+
+  const totalPriceOfEnrollments = enrollments.reduce((acc, obj) => {
+    return acc + obj.price * obj.count;
   }, 0);
 
   const testimonials = await Promise.all(
@@ -111,8 +117,9 @@ export async function getCourseDetailsByInstructor(instructorId, expand) {
     const allCourses = await Course.find({ instructor: instructorId }).lean();
     return {
       courses: allCourses?.flat(),
-      enrollments: enrollments?.flat(),
+      enrollments: enrollments,
       reviews: totalTestimonials,
+      price: totalPriceOfEnrollments,
     };
   }
   return {

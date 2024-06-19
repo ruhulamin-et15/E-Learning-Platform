@@ -1,6 +1,5 @@
 "use client";
 
-import { Logo } from "@/components/logo";
 import { MobileSidebar } from "./mobile-sidebar";
 import {
   DropdownMenu,
@@ -10,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 export const Navbar = () => {
   return (
@@ -30,13 +30,20 @@ export const Navbar = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56 mt-4">
             <DropdownMenuItem className="cursor-pointer">
-              <Link href="">Item One</Link>
+              <Link href="/account">Profile</Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer">
-              <Link href="">Item Two</Link>
+              <Link href="">Testimonials & Certificates</Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer">
-              <Link href="">Logout</Link>
+              <Link
+                href="#"
+                onClick={() => {
+                  signOut();
+                }}
+              >
+                Logout
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -44,3 +51,4 @@ export const Navbar = () => {
     </div>
   );
 };
+

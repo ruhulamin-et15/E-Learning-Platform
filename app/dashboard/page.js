@@ -1,8 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatPrice } from "@/lib/formatPrice";
+import { getLoggedInUser } from "@/lib/loggedin-user";
+import { getCourseDetailsByInstructor } from "@/queries/courses";
 formatPrice;
 
 const DashboardPage = async () => {
+  const loggedInUser = await getLoggedInUser();
+  const courseInfo = await getCourseDetailsByInstructor(loggedInUser._id, true);
+  console.log(courseInfo);
   return (
     <div className="p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
@@ -12,7 +17,9 @@ const DashboardPage = async () => {
             <CardTitle className="text-sm font-medium">Total Courses</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">15</div>
+            <div className="text-2xl font-bold">
+              {courseInfo?.courses.length}
+            </div>
           </CardContent>
         </Card>
         {/* total enrollments */}
@@ -23,7 +30,9 @@ const DashboardPage = async () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1000</div>
+            <div className="text-2xl font-bold">
+              {courseInfo?.enrollments.length}
+            </div>
           </CardContent>
         </Card>
         {/* total revinue */}
@@ -32,7 +41,9 @@ const DashboardPage = async () => {
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatPrice(12000)}</div>
+            <div className="text-2xl font-bold">
+              {formatPrice(courseInfo?.price)}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -42,3 +53,4 @@ const DashboardPage = async () => {
 };
 
 export default DashboardPage;
+
