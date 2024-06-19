@@ -7,7 +7,6 @@ formatPrice;
 const DashboardPage = async () => {
   const loggedInUser = await getLoggedInUser();
   const courseInfo = await getCourseDetailsByInstructor(loggedInUser._id, true);
-  console.log(courseInfo);
   return (
     <div className="p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
