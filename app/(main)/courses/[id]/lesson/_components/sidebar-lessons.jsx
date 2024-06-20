@@ -7,12 +7,13 @@ export const SidebarLessons = ({ courseId, lessons, moduleSlug }) => {
   const allLessons = replaceMongoIdInArray(lessons).toSorted(
     (a, b) => a.order - b.order
   );
+
   return (
     <AccordionContent>
       <div className="flex flex-col w-full gap-3">
         {allLessons.map((lesson) => (
           <SidebarLessonItem
-            key={lesson.id}
+            key={lesson?.id}
             lesson={lesson}
             courseId={courseId}
             moduleSlug={moduleSlug}

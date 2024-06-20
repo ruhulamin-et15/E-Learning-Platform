@@ -6,13 +6,15 @@ import { getCourseDetails } from "@/queries/courses";
 import { Watch } from "@/model/watch-model";
 import { getLoggedInUser } from "@/lib/loggedin-user";
 import { getReport } from "@/queries/reports";
+import mongoose from "mongoose";
 
 export const CourseSidebar = async ({ courseId }) => {
+  console.log(courseId);
   const course = await getCourseDetails(courseId);
   const loggedInUser = await getLoggedInUser();
 
   const report = await getReport({
-    course: courseId,
+    course: new mongoose.Types.ObjectId(courseId),
     student: loggedInUser._id,
   });
 
@@ -26,12 +28,12 @@ export const CourseSidebar = async ({ courseId }) => {
     totalModules > 0 ? (totalCompletedModules / totalModules) * 100 : 0;
 
   const updatedModules = await Promise.all(
-    course.modules.map(async (module) => {
+    course?.modules.map(async (module) => {
       const lessons = module?.lessonIds;
 
       await Promise.all(
         lessons.map(async (lesson) => {
-          const lessonId = lesson._id.toString();
+          const lessonId = lesson?._id.toString();
           const watch = await Watch.findOne({
             lesson: lessonId,
             user: loggedInUser._id,

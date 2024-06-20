@@ -1,26 +1,23 @@
 import { Separator } from "@/components/ui/separator";
 import VideoDescription from "./_components/video-description";
 import { getCourseDetails } from "@/queries/courses";
-import {
-  replaceMongoIdInArray,
-  replaceMongoIdInObject,
-} from "@/lib/convertData";
+import { replaceMongoIdInArray } from "@/lib/convertData";
 import { getLessonBySlug } from "@/queries/lessons";
 import { LessonVideo } from "./_components/lesson-video";
 
 const Course = async ({ params: { id }, searchParams: { name, module } }) => {
   const course = await getCourseDetails(id);
-  const allModules = replaceMongoIdInArray(course.modules).toSorted(
+  const allModules = replaceMongoIdInArray(course?.modules).toSorted(
     (a, b) => a.order - b.order
   );
 
-  const defaultLesson = replaceMongoIdInObject(
-    allModules[0]?.lessonIds?.toSorted((a, b) => a.order - b.order)[0]
-  );
+  const defaultLesson = allModules[0]?.lessonIds?.toSorted(
+    (a, b) => a.order - b.order
+  )[0];
 
   const lessonToPlay = name ? await getLessonBySlug(name) : defaultLesson;
 
-  const defaultModule = module ?? allModules[0].slug;
+  const defaultModule = module ?? allModules[0]?.slug;
 
   return (
     <div>
@@ -35,7 +32,7 @@ const Course = async ({ params: { id }, searchParams: { name, module } }) => {
         <div>
           <div className="p-4 flex flex-col md:flex-row items-center justify-between">
             <h2 className="text-2xl font-semibold mb-2">
-              Title: {lessonToPlay.title}
+              Title: {lessonToPlay?.title}
             </h2>
           </div>
           <Separator />

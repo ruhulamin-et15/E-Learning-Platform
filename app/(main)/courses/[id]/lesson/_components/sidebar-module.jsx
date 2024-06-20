@@ -24,7 +24,7 @@ export const SidebarModule = ({ courseId, modules }) => {
     });
   });
 
-  const expandedModuleId = expandedModule?.id ?? allModules[0].id;
+  const expandedModuleId = expandedModule?.id ?? allModules[0]?.id;
 
   return (
     <Accordion
@@ -34,12 +34,12 @@ export const SidebarModule = ({ courseId, modules }) => {
       className="w-full px-6"
     >
       {allModules.map((module) => (
-        <AccordionItem key={module.id} className="border-0" value={module.id}>
-          <AccordionTrigger>{module.title} </AccordionTrigger>
+        <AccordionItem key={module?.id} className="border-0" value={module?.id}>
+          <AccordionTrigger>{module?.title} </AccordionTrigger>
           <SidebarLessons
             courseId={courseId}
-            lessons={module.lessonIds}
-            moduleSlug={module.slug}
+            lessons={module?.lessonIds}
+            moduleSlug={module?.slug}
           />
         </AccordionItem>
       ))}

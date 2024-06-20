@@ -28,7 +28,7 @@ export const LessonVideo = ({ lesson, courseId, module }) => {
         },
         body: JSON.stringify({
           courseId: courseId,
-          lessonId: lesson.id,
+          lessonId: lesson?._id,
           moduleSlug: module,
           state: "started",
           lastTime: 0,
@@ -42,7 +42,7 @@ export const LessonVideo = ({ lesson, courseId, module }) => {
       }
     }
     started && updateLessonWatch();
-  }, [started, lesson.id, courseId, module]);
+  }, [started, lesson?._id, courseId, module]);
 
   useEffect(() => {
     async function updateLessonWatch() {
@@ -53,7 +53,7 @@ export const LessonVideo = ({ lesson, courseId, module }) => {
         },
         body: JSON.stringify({
           courseId: courseId,
-          lessonId: lesson.id,
+          lessonId: lesson?._id,
           moduleSlug: module,
           state: "completed",
           lastTime: 0,
@@ -61,8 +61,7 @@ export const LessonVideo = ({ lesson, courseId, module }) => {
       });
 
       if (response.status === 200) {
-        const result = await response.text();
-        console.log(result);
+        await response.text();
         setEnded(false);
         router.refresh();
       }
@@ -84,16 +83,24 @@ export const LessonVideo = ({ lesson, courseId, module }) => {
 
   return (
     <>
-      {hasWindow && (
-        <ReactPlayer
-          url={lesson.video_url}
-          width="100%"
-          height="470px"
-          controls={true}
-          onStart={handleOnStart}
-          onDuration={handleOnDuraion}
-          onEnded={handleOnEnded}
-        />
+      {!lesson ? (
+        <div className="flex items-center justify-center h-[400px] w-[800px] border border-red-500 rounded-md">
+          <p className="font-bold text-lg">No Video Available Now</p>
+        </div>
+      ) : (
+        <>
+          {hasWindow && (
+            <ReactPlayer
+              url={lesson?.video_url}
+              width="100%"
+              height="470px"
+              controls={true}
+              onStart={handleOnStart}
+              onDuration={handleOnDuraion}
+              onEnded={handleOnEnded}
+            />
+          )}
+        </>
       )}
     </>
   );
