@@ -1,10 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
 
-const DownloadCertificate = () => {
+const DownloadCertificate = ({ courseId, totalProgress }) => {
   return (
-    <Button className="w-full mt-6">
-      <>Download Certificate</>
+    <Button disabled={totalProgress < 100} className="w-full mt-6">
+      Download Certificate
     </Button>
   );
 };

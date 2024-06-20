@@ -9,7 +9,6 @@ export const LessonVideo = ({ lesson, courseId, module }) => {
   const [hasWindow, setHasWindow] = useState(false);
   const [started, setStarted] = useState(false);
   const [ended, setEnded] = useState(false);
-  const [duration, setDuration] = useState(0);
 
   const router = useRouter();
 
@@ -28,7 +27,7 @@ export const LessonVideo = ({ lesson, courseId, module }) => {
         },
         body: JSON.stringify({
           courseId: courseId,
-          lessonId: lesson?._id,
+          lessonId: lesson?.id,
           moduleSlug: module,
           state: "started",
           lastTime: 0,
@@ -42,7 +41,7 @@ export const LessonVideo = ({ lesson, courseId, module }) => {
       }
     }
     started && updateLessonWatch();
-  }, [started, lesson?._id, courseId, module]);
+  }, [started, lesson?.id, courseId, module]);
 
   useEffect(() => {
     async function updateLessonWatch() {
@@ -53,7 +52,7 @@ export const LessonVideo = ({ lesson, courseId, module }) => {
         },
         body: JSON.stringify({
           courseId: courseId,
-          lessonId: lesson?._id,
+          lessonId: lesson?.id,
           moduleSlug: module,
           state: "completed",
           lastTime: 0,
@@ -77,14 +76,10 @@ export const LessonVideo = ({ lesson, courseId, module }) => {
     setEnded(true);
   }
 
-  function handleOnDuraion(duration) {
-    setDuration(duration);
-  }
-
   return (
     <>
       {!lesson ? (
-        <div className="flex items-center justify-center h-[400px] w-[800px] border border-red-500 rounded-md">
+        <div className="flex items-center justify-center h-[470px] w-[100%] border border-red-500 rounded-md">
           <p className="font-bold text-lg">No Video Available Now</p>
         </div>
       ) : (
@@ -96,7 +91,6 @@ export const LessonVideo = ({ lesson, courseId, module }) => {
               height="470px"
               controls={true}
               onStart={handleOnStart}
-              onDuration={handleOnDuraion}
               onEnded={handleOnEnded}
             />
           )}

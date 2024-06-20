@@ -9,7 +9,6 @@ import { getReport } from "@/queries/reports";
 import mongoose from "mongoose";
 
 export const CourseSidebar = async ({ courseId }) => {
-  console.log(courseId);
   const course = await getCourseDetails(courseId);
   const loggedInUser = await getLoggedInUser();
 
@@ -60,7 +59,10 @@ export const CourseSidebar = async ({ courseId }) => {
         </div>
         <SidebarModule courseId={courseId} modules={updatedModules} />
         <div className="w-full px-6">
-          <DownloadCertificate courseId={courseId} />
+          <DownloadCertificate
+            courseId={courseId}
+            totalProgress={totalProgress}
+          />
           <GiveReview />
         </div>
       </div>
