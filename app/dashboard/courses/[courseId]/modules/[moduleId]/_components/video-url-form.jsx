@@ -17,9 +17,9 @@ import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { VideoPlayer } from "@/app/(player)/[course_slug]/[lesson]/_components/video-player";
 import { updateLesson } from "@/app/actions/lesson";
 import { durationFormate } from "@/lib/date";
+import { VideoPlayer } from "@/app/(main)/courses/[id]/lesson/_components/video-player";
 
 const formSchema = z.object({
   url: z.string().min(1, {
