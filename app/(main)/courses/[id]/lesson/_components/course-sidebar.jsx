@@ -7,6 +7,7 @@ import { Watch } from "@/model/watch-model";
 import { getLoggedInUser } from "@/lib/loggedin-user";
 import { getReport } from "@/queries/reports";
 import mongoose from "mongoose";
+import { Quiz } from "./quiz";
 
 export const CourseSidebar = async ({ courseId }) => {
   const course = await getCourseDetails(courseId);
@@ -48,6 +49,10 @@ export const CourseSidebar = async ({ courseId }) => {
     })
   );
 
+  const quizSets = course?.quizSet;
+
+  const isQuizComplete = report?.quizAssessment ? true : false;
+
   return (
     <>
       <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
@@ -58,7 +63,16 @@ export const CourseSidebar = async ({ courseId }) => {
           </div>
         </div>
         <SidebarModule courseId={courseId} modules={updatedModules} />
+
         <div className="w-full px-6">
+          {quizSets && (
+            <Quiz
+              courseId={courseId}
+              quizSets={quizSets}
+              isQuizComplete={isQuizComplete}
+              report={report}
+            />
+          )}
           <DownloadCertificate
             courseId={courseId}
             totalProgress={totalProgress}

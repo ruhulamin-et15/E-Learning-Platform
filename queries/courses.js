@@ -11,6 +11,8 @@ import { getTestimonialsForCourse } from "./testimonials";
 import { Module } from "@/model/module-model";
 import { dbConnect } from "@/service/mongo";
 import { Lesson } from "@/model/lesson-model";
+import { Quizset } from "@/model/quizset-model";
+import { Quiz } from "@/model/quizzes-model";
 
 export async function getCourseList() {
   await dbConnect();
@@ -69,6 +71,14 @@ export async function getCourseDetails(id) {
       populate: {
         path: "lessonIds",
         model: Lesson,
+      },
+    })
+    .populate({
+      path: "quizSet",
+      model: Quizset,
+      populate: {
+        path: "quizIds",
+        model: Quiz,
       },
     })
 
