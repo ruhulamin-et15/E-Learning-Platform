@@ -1,6 +1,5 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import * as z from "zod";
-// import axios from "axios";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,6 +15,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { CreateTestimonial } from "@/app/actions/testimonial";
+
 const formSchema = z.object({
   rating: z.coerce
     .number()
@@ -29,7 +30,7 @@ const formSchema = z.object({
     message: "Description is required!",
   }),
 });
-export const ReviewModal = ({ open, setOpen }) => {
+export const ReviewModal = ({ open, setOpen, userId, courseId }) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,13 +42,19 @@ export const ReviewModal = ({ open, setOpen }) => {
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values) => {
+    const updateValues = {
+      rating: values.rating,
+      content: values.review,
+      user: userId,
+      courseId: courseId,
+    };
     try {
-      toast.success("Review added");
+      await CreateTestimonial(updateValues);
+      toast.success("Review added successfully");
       setOpen(false);
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error(error.message);
     }
-    console.log(values);
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -69,7 +76,7 @@ export const ReviewModal = ({ open, setOpen }) => {
               name="rating"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Course Title</FormLabel>
+                  <FormLabel>Rating</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
@@ -106,11 +113,15 @@ export const ReviewModal = ({ open, setOpen }) => {
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Button variant="outline" type="button">
+              <Button
+                onClick={() => setOpen(false)}
+                variant="outline"
+                type="button"
+              >
                 Cancel
               </Button>
 
-              <Button type="submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={!isValid || isSubmitting}>
                 Continue
               </Button>
             </div>
@@ -120,3 +131,4 @@ export const ReviewModal = ({ open, setOpen }) => {
     </Dialog>
   );
 };
+

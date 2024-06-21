@@ -63,7 +63,7 @@ export const CourseSidebar = async ({ courseId }) => {
             courseId={courseId}
             totalProgress={totalProgress}
           />
-          <GiveReview />
+          <GiveReview userId={loggedInUser._id} courseId={courseId} />
         </div>
       </div>
     </>

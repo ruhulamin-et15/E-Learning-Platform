@@ -49,7 +49,6 @@ const AddCourse = () => {
     } catch (error) {
       toast.error("Something went wrong");
     }
-    console.log(values);
   };
   return (
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
