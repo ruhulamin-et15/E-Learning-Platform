@@ -19,7 +19,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { updateLesson } from "@/app/actions/lesson";
 import { durationFormate } from "@/lib/date";
-import { VideoPlayer } from "@/app/(main)/courses/[id]/lesson/_components/video-player";
+import ReactPlayer from "react-player";
 
 const formSchema = z.object({
   url: z.string().min(1, {
@@ -92,7 +92,12 @@ export const VideoUrlForm = ({ initialData, lessonId }) => {
         <>
           <p className="text-sm mt-2">{url}</p>
           <div className="mt-6">
-            <VideoPlayer url={url} />
+            <ReactPlayer
+              url={url}
+              width="100%"
+              height="400px"
+              controls={true}
+            />
           </div>
         </>
       )}
