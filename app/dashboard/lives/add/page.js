@@ -16,13 +16,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import {
@@ -71,7 +64,7 @@ const AddLive = () => {
     },
   });
 
-  const { isSubmitting, isValid } = form.formState;
+  const { isSubmitting } = form.formState;
 
   const onSubmit = async (values) => {
     try {
@@ -113,7 +106,7 @@ const AddLive = () => {
               <FormField
                 control={form.control}
                 name="title"
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
                     <FormLabel>Thumbnail</FormLabel>
                     <FormControl>
@@ -271,3 +264,4 @@ const AddLive = () => {
 };
 
 export default AddLive;
+

@@ -6,7 +6,7 @@ import { updateCourse } from "@/app/actions/course";
 
 const pump = promisify(pipeline);
 
-export async function POST(request, response) {
+export async function POST(request) {
   try {
     const formData = await request.formData();
     const file = formData.get("files");

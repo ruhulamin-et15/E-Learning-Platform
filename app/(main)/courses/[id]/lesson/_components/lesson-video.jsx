@@ -66,7 +66,7 @@ export const LessonVideo = ({ lesson, courseId, module }) => {
       }
     }
     ended && updateLessonWatch();
-  }, [ended]);
+  }, [ended, courseId, lesson?.id, module, router]);
 
   function handleOnStart() {
     setStarted(true);

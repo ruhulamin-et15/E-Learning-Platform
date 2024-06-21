@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 import { CourseProgress } from "@/components/course-pregress";
 import { getCategoryDetails } from "@/queries/categories";
 import { getCourseDetails } from "@/queries/courses";

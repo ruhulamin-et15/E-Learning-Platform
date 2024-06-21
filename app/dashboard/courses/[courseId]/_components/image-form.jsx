@@ -1,3 +1,4 @@
+/* eslint-disable no-inner-declarations */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -41,7 +42,7 @@ export const ImageForm = ({ initialData, courseId }) => {
 
       uploadFile();
     }
-  }, [file, courseId, router]);
+  }, [file, courseId, router, initialData]);
 
   const toggleEdit = () => setIsEditing((current) => !current);
 

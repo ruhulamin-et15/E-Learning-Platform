@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { CourseProgress } from "@/components/course-pregress";
 import GiveReview from "./give-review";
 import DownloadCertificate from "./download-certificate";

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { Course } from "@/model/course-model";
 import { Category } from "@/model/category-model";
 import { User } from "@/model/user-model";

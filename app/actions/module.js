@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 "use server";
 
 import { create } from "@/queries/modules";

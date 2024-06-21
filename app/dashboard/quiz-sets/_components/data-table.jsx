@@ -1,14 +1,11 @@
 "use client";
 import * as React from "react";
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
   getPaginationRowModel,
-  SortingState,
   getSortedRowModel,
-  ColumnFiltersState,
   getFilteredRowModel,
 } from "@tanstack/react-table";
 
@@ -133,3 +130,4 @@ export function DataTable({ columns, data }) {
     </div>
   );
 }
+

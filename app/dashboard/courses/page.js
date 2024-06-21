@@ -5,6 +5,8 @@ import {
 import { columns } from "./_components/columns";
 import { DataTable } from "./_components/data-table";
 
+export const dynamic = "force-dynamic";
+
 const CoursesPage = async () => {
   const courses = await getInstructorDashboardData(COURSE_DATA);
   return (
