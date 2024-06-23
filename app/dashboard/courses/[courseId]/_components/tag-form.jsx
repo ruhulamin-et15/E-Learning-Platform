@@ -13,7 +13,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { formatPrice } from "@/lib/formatPrice";
 import { cn } from "@/lib/utils";
 import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -22,30 +21,33 @@ import { toast } from "sonner";
 import { updateCourse } from "@/app/actions/course";
 
 const formSchema = z.object({
-  price: z.coerce.number(),
+  tag: z.string().min(1),
 });
 
 export const TagForm = ({ initialData, courseId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
+  const [tags, setTags] = useState(initialData?.tag);
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      price: initialData?.price ?? undefined,
+      tag: tags ?? undefined,
     },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values) => {
+    console.log(values);
     try {
-      await updateCourse(courseId, values);
+      await updateCourse(courseId, { tag: values.tag });
+      setTags(values.tag);
       toggleEdit();
       router.refresh();
-      toast.success("Course price has been updated");
+      toast.success("Course tag has been updated");
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -54,26 +56,21 @@ export const TagForm = ({ initialData, courseId }) => {
   return (
     <div className="mt-6 border bg-gray-50 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Course Price
+        Tag
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit Price
+              Edit Tag
             </>
           )}
         </Button>
       </div>
       {!isEditing && (
-        <p
-          className={cn(
-            "text-sm mt-2",
-            !initialData.price && "text-slate-500 italic"
-          )}
-        >
-          {initialData.price ? formatPrice(initialData.price) : "No price"}
+        <p className={cn("text-sm mt-2", !tags && "text-slate-500 italic")}>
+          {tags ? tags : "No tag"}
         </p>
       )}
       {isEditing && (
@@ -84,15 +81,14 @@ export const TagForm = ({ initialData, courseId }) => {
           >
             <FormField
               control={form.control}
-              name="price"
+              name="tag"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Input
-                      type="number"
-                      step="0.01"
+                      type="text"
                       disabled={isSubmitting}
-                      placeholder="Set a price for your course"
+                      placeholder="add comma separated tag for your course"
                       {...field}
                     />
                   </FormControl>

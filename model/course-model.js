@@ -34,7 +34,7 @@ const courseSchema = new Schema({
     type: [String],
   },
   tag: {
-    type: [String],
+    type: String,
   },
   createdOn: {
     required: true,

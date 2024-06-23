@@ -114,7 +114,7 @@ const EditCourse = async ({ params: { courseId } }) => {
                 <IconBadge icon={TagIcon} />
                 <h2 className="text-xl">Tag</h2>
               </div>
-              <TagForm initialData={{ tag: course?.tag }} courseId={courseId} />
+              <TagForm initialData={course} courseId={courseId} />
             </div>
             <div>
               <div className="flex items-center gap-x-2">
