@@ -33,6 +33,9 @@ const courseSchema = new Schema({
   learning: {
     type: [String],
   },
+  tag: {
+    type: [String],
+  },
   createdOn: {
     required: true,
     default: Date.now(),

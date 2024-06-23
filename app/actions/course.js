@@ -61,3 +61,13 @@ export async function updateQuizSetId(courseId, dataToUpdate) {
     throw new Error(error);
   }
 }
+
+// export async function updateLearningItems(courseId, dataToUpdate) {
+//   await dbConnect();
+//   try {
+//     const data = { learning: dataToUpdate.learning };
+//     await Course.findByIdAndUpdate(courseId, data, { new: true });
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// }

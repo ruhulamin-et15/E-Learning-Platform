@@ -1,5 +1,11 @@
 import { IconBadge } from "@/components/icon-badge";
-import { CircleDollarSign, LayoutDashboard, ListChecks } from "lucide-react";
+import {
+  Book,
+  CircleDollarSign,
+  LayoutDashboard,
+  ListChecks,
+  TagIcon,
+} from "lucide-react";
 import { CategoryForm } from "./_components/category-form";
 import { DescriptionForm } from "./_components/description-form";
 import { ImageForm } from "./_components/image-form";
@@ -13,6 +19,8 @@ import { getCourseDetails } from "@/queries/courses";
 import { getCategories } from "@/queries/categories";
 import { replaceMongoIdInArray } from "@/lib/convertData";
 import { getAllQuizSets } from "@/queries/quizzes";
+import { TagForm } from "./_components/tag-form";
+import { LearningForm } from "./_components/learning-form";
 
 const EditCourse = async ({ params: { courseId } }) => {
   const course = await getCourseDetails(courseId);
@@ -93,6 +101,20 @@ const EditCourse = async ({ params: { courseId } }) => {
                 <h2 className="text-xl">Course Modules</h2>
               </div>
               <ModulesForm initialData={modules} courseId={courseId} />
+            </div>
+            <div>
+              <div className="flex items-center gap-x-2 mb-6">
+                <IconBadge icon={Book} />
+                <h2 className="text-xl">What You Learn From</h2>
+              </div>
+              <LearningForm initialData={course} courseId={courseId} />
+            </div>
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={TagIcon} />
+                <h2 className="text-xl">Tag</h2>
+              </div>
+              <TagForm initialData={{ tag: course?.tag }} courseId={courseId} />
             </div>
             <div>
               <div className="flex items-center gap-x-2">
