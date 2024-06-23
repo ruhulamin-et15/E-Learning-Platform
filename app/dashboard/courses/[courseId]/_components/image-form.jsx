@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-inner-declarations */
 "use client";
 
@@ -42,7 +43,7 @@ export const ImageForm = ({ initialData, courseId }) => {
 
       uploadFile();
     }
-  }, [file, courseId, router, initialData]);
+  }, [file]);
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
