@@ -2,7 +2,6 @@ import * as React from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { useLockBody } from "@/hooks/use-lock-body";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +13,6 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 
 export function MobileNav({ items, children }) {
-  useLockBody();
   const { data: session } = useSession();
   const [loginSession, setLoginSession] = useState(null);
 

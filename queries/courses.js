@@ -158,3 +158,16 @@ export async function create(courseData) {
   }
 }
 
+export async function relatedCourses(tag) {
+  await dbConnect();
+  try {
+    const courses = await Course.find({ tag: tag }).lean().populate({
+      path: "category",
+      model: Category,
+    });
+    return replaceMongoIdInArray(courses);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+

@@ -59,7 +59,7 @@ async function refreshAccessToken(token) {
       refreshToken: refreshedTokens.refreshToken ?? token.refreshToken,
     };
   } catch (error) {
-    console.error("Error refreshing access token", error);
+    // console.error("Error refreshing access token", error);
     return {
       ...token,
       error: "RefreshAccessTokenError",
@@ -87,8 +87,8 @@ export const {
   },
   callbacks: {
     async jwt({ token, user, account }) {
-      console.log(`jwt token: ${JSON.stringify(token)}`);
-      console.log(`jwt account: ${JSON.stringify(account)}`);
+      // console.log(`jwt token: ${JSON.stringify(token)}`);
+      // console.log(`jwt account: ${JSON.stringify(account)}`);
       if (account && user) {
         token.accessToken = account?.access_token;
         token.refreshToken = account?.refresh_token;
@@ -96,14 +96,14 @@ export const {
         token.user = user;
       }
 
-      console.log(`token expired at ${new Date(token.accessTokenExpires)}`);
+      // console.log(`token expired at ${new Date(token.accessTokenExpires)}`);
 
       if (user && user.refreshToken) {
         token.refreshToken = user.refreshToken;
       }
 
       if (Date.now() < token.accessTokenExpires) {
-        console.log(`At ${new Date(Date.now())}, Using old token`);
+        // console.log(`At ${new Date(Date.now())}, Using old token`);
         return token;
       }
       return refreshAccessToken(token);
@@ -113,7 +113,7 @@ export const {
       session.accessToken = token?.access_token;
       session.error = token.error;
 
-      console.log(`Returning session ${JSON.stringify(session)}`);
+      // console.log(`Returning session ${JSON.stringify(session)}`);
       return session;
     },
   },

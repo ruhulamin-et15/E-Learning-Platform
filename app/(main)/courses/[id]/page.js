@@ -7,6 +7,7 @@ import RelatedCourses from "./_components/RelatedCourses";
 
 const SingleCoursePage = async ({ params: { id } }) => {
   const course = await getCourseDetails(id);
+
   return (
     <>
       <CourseDetailsIntro course={course} />
@@ -16,7 +17,7 @@ const SingleCoursePage = async ({ params: { id } }) => {
           testimonials={replaceMongoIdInArray(course?.testimonials)}
         />
       )}
-      <RelatedCourses />
+      <RelatedCourses tag={course?.tag} />
     </>
   );
 };

@@ -3,13 +3,11 @@ import Image from "next/image";
 import { BookOpen } from "lucide-react";
 import { formatPrice } from "@/lib/formatPrice";
 import { EnrollCourse } from "@/components/enroll-course";
-import { auth } from "@/auth";
-import { getUserByEmail } from "@/queries/users";
 import { hasEnrollmentsForCourse } from "@/queries/enrollments";
+import { getLoggedInUser } from "@/lib/loggedin-user";
 
 const CourseCard = async ({ course }) => {
-  const session = await auth();
-  const loggedInUser = await getUserByEmail(session?.user?.email);
+  const loggedInUser = await getLoggedInUser();
   const hasEnrollment = await hasEnrollmentsForCourse(
     course?.id,
     loggedInUser?._id
