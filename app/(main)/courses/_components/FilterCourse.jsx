@@ -7,12 +7,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
-
-const PRICE_OPTIONS = [
-  { label: "Free", value: "free" },
-  { label: "Paid", value: "paid" },
-];
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const CATEGORY_OPTIONS = [
   {
@@ -62,8 +58,33 @@ const FilterCourse = () => {
   const [filter, setFilter] = useState({
     categories: ["development"],
     price: ["free"],
-    sort: "",
   });
+
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    const categories = params.get("categories");
+    const price = params.get("price");
+
+    setFilter({
+      categories: categories ? categories.split(",") : [],
+      price: price ? price.split(",") : [],
+    });
+  }, [searchParams]);
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (filter.categories.length) {
+      params.set("categories", filter.categories.join(","));
+    }
+    if (filter.price.length) {
+      params.set("price", filter.price.join(","));
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }, [filter, pathname, replace]);
 
   const applyArrayFilter = ({ type, value }) => {
     const isFilterApplied = filter[type].includes(value);
@@ -104,36 +125,6 @@ const FilterCourse = () => {
                   />
                   <label
                     htmlFor={`category-${optionIdx}`}
-                    className="ml-3 text-sm text-gray-600 cursor-pointer"
-                  >
-                    {option.label}
-                  </label>
-                </li>
-              ))}
-            </ul>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="price">
-          <AccordionTrigger className="py-3 text-sm text-gray-400 hover:text-gray-500">
-            <span className="font-medium text-gray-900">Price</span>
-          </AccordionTrigger>
-          <AccordionContent className="pt-6 animate-none">
-            <ul className="space-y-4">
-              {PRICE_OPTIONS.map((option, optionIdx) => (
-                <li key={option.value} className="flex items-center">
-                  <Checkbox
-                    type="checkbox"
-                    id={`price-${optionIdx}`}
-                    onCheckedChange={() => {
-                      applyArrayFilter({
-                        type: "price",
-                        value: option.value,
-                      });
-                    }}
-                    checked={filter.price.includes(option.value)}
-                  />
-                  <label
-                    htmlFor={`price-${optionIdx}`}
                     className="ml-3 text-sm text-gray-600 cursor-pointer"
                   >
                     {option.label}

@@ -3,12 +3,8 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { useState } from "react";
 
-const ActiveFilter = () => {
-  const [filter, setFilter] = useState({
-    categories: ["development"],
-    price: ["free"],
-    sort: "",
-  });
+const ActiveFilter = ({ filterItem }) => {
+  const [filter, setFilter] = useState(filterItem);
 
   const applyArrayFilter = ({ type, value }) => {
     const isFilterApplied = filter[type].includes(value);

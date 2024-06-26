@@ -4,11 +4,12 @@ import FilterCourseMobile from "./_components/FilterCourseMobile";
 import ActiveFilters from "./_components/ActiveFilters";
 import FilterCourse from "./_components/FilterCourse";
 import { getCourseList } from "@/queries/courses";
-import CourseCard from "./_components/CourseCard";
+import Courses from "./_components/Courses";
+import { Suspense } from "react";
+import LoadingCourse from "./_components/LoadingCourses";
 
-const CoursesPage = async () => {
-  const courses = await getCourseList();
-
+const CoursesPage = async ({ searchParams: { price, categories } }) => {
+  const courses = await getCourseList(price, categories);
   return (
     <section
       id="courses"
@@ -23,20 +24,17 @@ const CoursesPage = async () => {
         </div>
       </div>
       <ActiveFilters
-        filter={{
-          categories: ["development"],
-          price: ["free"],
-          sort: "",
+        filterItem={{
+          categories: [categories],
+          price: [price],
         }}
       />
       <section className="pb-24 pt-6">
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
           <FilterCourse />
-          <div className="lg:col-span-3 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-            {courses.map((course) => {
-              return <CourseCard key={course?.id} course={course} />;
-            })}
-          </div>
+          <Suspense fallback={<LoadingCourse />}>
+            <Courses courses={courses} />
+          </Suspense>
         </div>
       </section>
     </section>

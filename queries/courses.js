@@ -15,7 +15,7 @@ import { Lesson } from "@/model/lesson-model";
 import { Quizset } from "@/model/quizset-model";
 import { Quiz } from "@/model/quizzes-model";
 
-export async function getCourseList() {
+export async function getCourseList(price, categories) {
   await dbConnect();
   const courses = await Course.find({ active: true })
     .select([
@@ -44,7 +44,32 @@ export async function getCourseList() {
       model: Module,
     })
     .lean();
-  return replaceMongoIdInArray(courses);
+
+  let allCourses = courses;
+
+  if (price) {
+    const sortedCourses = allCourses.toSorted((a, b) => {
+      if (price === "price-asc") {
+        return a.price - b.price;
+      } else if (price === "price-desc") {
+        return b.price - a.price;
+      } else {
+        return 0;
+      }
+    });
+    allCourses = sortedCourses;
+  }
+
+  if (categories) {
+    const categoryArray = categories
+      .split(",")
+      .map((cat) => cat.trim().toLowerCase());
+    allCourses = allCourses.filter((course) =>
+      categoryArray.includes(course.category.title.toLowerCase())
+    );
+  }
+
+  return replaceMongoIdInArray(allCourses);
 }
 
 export async function getCourseDetails(id) {
