@@ -26,6 +26,7 @@ const LoginForm = () => {
 
       if (response.error) {
         console.error(response.error);
+        toast.error(response.error);
       } else {
         router.push("/courses");
         toast.success("User Login Successfull");
