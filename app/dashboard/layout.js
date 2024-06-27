@@ -1,12 +1,14 @@
-import { isInstructor } from "@/lib/authenticate";
 import { Navbar } from "./_components/navbar";
 import { Sidebar } from "./_components/sidebar";
 import { getLoggedInUser } from "@/lib/loggedin-user";
 import { redirect } from "next/navigation";
+import { SiteFooter } from "@/components/site-footer";
 
 const DashboardLayout = async ({ children }) => {
   const loggedInUser = await getLoggedInUser();
-  if (isInstructor(loggedInUser)) {
+  const isInstructor = loggedInUser?.role === "instructor";
+
+  if (!isInstructor) {
     return redirect("/");
   }
 
@@ -19,6 +21,7 @@ const DashboardLayout = async ({ children }) => {
         <Sidebar />
       </div>
       <main className="lg:pl-56 pt-[80px] h-full">{children}</main>
+      <SiteFooter />
     </div>
   );
 };
