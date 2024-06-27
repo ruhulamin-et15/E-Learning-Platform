@@ -15,9 +15,10 @@ import { Lesson } from "@/model/lesson-model";
 import { Quizset } from "@/model/quizset-model";
 import { Quiz } from "@/model/quizzes-model";
 
-export async function getCourseList(price, categories) {
+export async function getCourseList(price, categories, search) {
   await dbConnect();
-  const courses = await Course.find({ active: true })
+  const regex = new RegExp(search, "i");
+  const courses = await Course.find({ active: true, title: { $regex: regex } })
     .select([
       "title",
       "subtitle",

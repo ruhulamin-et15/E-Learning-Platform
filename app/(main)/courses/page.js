@@ -8,8 +8,13 @@ import Courses from "./_components/Courses";
 import { Suspense } from "react";
 import LoadingCourse from "./_components/LoadingCourses";
 
-const CoursesPage = async ({ searchParams: { price, categories } }) => {
-  const courses = await getCourseList(price, categories);
+const CoursesPage = async ({ searchParams: { price, categories, search } }) => {
+  const courses = await getCourseList(price, categories, search);
+  const activeFilters = {
+    categories: categories ? categories.split(",") : [],
+    price: price ? price.split(",") : [],
+  };
+
   return (
     <section
       id="courses"
@@ -23,18 +28,19 @@ const CoursesPage = async ({ searchParams: { price, categories } }) => {
           <FilterCourseMobile />
         </div>
       </div>
-      <ActiveFilters
-        filterItem={{
-          categories: [categories],
-          price: [price],
-        }}
-      />
+      <ActiveFilters filterItem={activeFilters} />
       <section className="pb-24 pt-6">
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
           <FilterCourse />
-          <Suspense fallback={<LoadingCourse />}>
-            <Courses courses={courses} />
-          </Suspense>
+          {courses.length > 0 ? (
+            <Suspense fallback={<LoadingCourse />}>
+              <Courses courses={courses} />
+            </Suspense>
+          ) : (
+            <div className="text-l font-bold">
+              Course not found for your criteria
+            </div>
+          )}
         </div>
       </section>
     </section>

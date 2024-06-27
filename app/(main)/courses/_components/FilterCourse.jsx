@@ -58,6 +58,7 @@ const FilterCourse = () => {
   const [filter, setFilter] = useState({
     categories: ["development"],
     price: ["free"],
+    search: ["js"],
   });
 
   const searchParams = useSearchParams();
@@ -68,10 +69,12 @@ const FilterCourse = () => {
     const params = new URLSearchParams(searchParams);
     const categories = params.get("categories");
     const price = params.get("price");
+    const search = params.get("search");
 
     setFilter({
       categories: categories ? categories.split(",") : [],
       price: price ? price.split(",") : [],
+      search: search ? search.split(",") : [],
     });
   }, [searchParams]);
 
@@ -82,6 +85,9 @@ const FilterCourse = () => {
     }
     if (filter.price.length) {
       params.set("price", filter.price.join(","));
+    }
+    if (filter.search.length) {
+      params.set("search", filter.search.join(","));
     }
     replace(`${pathname}?${params.toString()}`);
   }, [filter, pathname, replace]);

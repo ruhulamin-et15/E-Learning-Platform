@@ -1,10 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ActiveFilter = ({ filterItem }) => {
   const [filter, setFilter] = useState(filterItem);
+
+  useEffect(() => {
+    setFilter(filterItem);
+  }, [filterItem]);
 
   const applyArrayFilter = ({ type, value }) => {
     const isFilterApplied = filter[type].includes(value);
